@@ -6,9 +6,10 @@ import { Badge } from "./ui/badge";
 interface CommunityPageProps {
   onBack: () => void;
   onCreateThread: () => void;
+  onThreadClick: (threadId: number) => void;
 }
 
-export function CommunityPage({ onBack, onCreateThread }: CommunityPageProps) {
+export function CommunityPage({ onBack, onCreateThread, onThreadClick }: CommunityPageProps) {
   const threads = [
     {
       id: 1,
@@ -71,7 +72,7 @@ export function CommunityPage({ onBack, onCreateThread }: CommunityPageProps) {
       {/* Create Thread Button */}
       <div className="px-6 mb-6">
         <Button
-          onClick={onCreateThread}
+          onClick={onCreateThread(thread.id)}
           className="w-full bg-accent hover:bg-accent/90 text-accent-foreground rounded-2xl h-12 shadow-md active:scale-95 transition-transform"
         >
           <Plus className="w-5 h-5 mr-2" />

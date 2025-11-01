@@ -18,6 +18,7 @@ import { NotificationsPage } from "./components/NotificationsPage";
 import { CreateThreadPage } from "./components/CreateThreadPage";
 import { BottomNav } from "./components/BottomNav";
 import { Toaster } from "./components/ui/sonner";
+import { ThreadDetailPage } from "./components/ThreadDetailPage";
 import { toast } from "sonner@2.0.3";
 
 type Page = 
@@ -37,7 +38,8 @@ type Page =
   | 'edit-profile'
   | 'change-password'
   | 'notifications'
-  | 'create-thread';
+  | 'create-thread'
+  | 'thread-detail';
 
 interface User {
   name: string;
@@ -50,6 +52,7 @@ export default function App() {
   const [user, setUser] = useState<User | null>(null);
   const [activeTab, setActiveTab] = useState('home');
   const [selectedClassId, setSelectedClassId] = useState<number | null>(null);
+  const [selectedThreadId, setSelectedThreadId] = useState<number | null>(null);
   const [registerRole, setRegisterRole] = useState<'coach' | 'peserta'>('peserta');
 
   const handleLogin = (email: string, password: string, role: 'coach' | 'peserta') => {
@@ -125,6 +128,11 @@ export default function App() {
     if (user) {
       setUser({ ...user, name });
     }
+  };
+
+  const handleThreadClick = (threadId: number) => {
+    setSelectedThreadId(threadId);
+    setCurrentPage('thread-detail');
   };
 
   // Render pages based on current state
@@ -219,6 +227,7 @@ export default function App() {
           <CommunityPage 
             onBack={handleBackToDashboard}
             onCreateThread={() => setCurrentPage('create-thread')}
+            onThreadClick={handleThreadClick}
           />
         );
 
@@ -295,12 +304,20 @@ export default function App() {
           />
         );
 
+        case 'thread-detail':
+        return (
+          <ThreadDetailPage
+            onBack={() => setCurrentPage('community')}
+            threadId={selectedThreadId || 0}
+          />
+        );
+
       default:
         return null;
     }
   };
 
-  const showBottomNav = user && !['login', 'register', 'quiz', 'edit-profile', 'change-password', 'notifications', 'create-thread'].includes(currentPage);
+  const showBottomNav = user && !['login', 'register', 'quiz', 'edit-profile', 'change-password', 'notifications', 'create-thread', 'thread-detail'].includes(currentPage);
 
   return (
     <div className="relative max-w-md mx-auto bg-background min-h-screen">
