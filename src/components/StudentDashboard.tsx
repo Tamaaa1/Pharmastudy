@@ -6,12 +6,20 @@ import { ImageWithFallback } from "./figma/ImageWithFallback";
 
 interface StudentDashboardProps {
   userName: string;
-  onNavigateToClassList: () => void;
+  onNavigateToClassList: () => void; // Untuk 'Jelajahi Kelas'
   onNavigateToCommunity: () => void;
   onNavigateToQuiz: () => void;
+  onNavigateToMyClasses: () => void; // <-- TAMBAHKAN INI
 }
 
-export function StudentDashboard({ userName, onNavigateToClassList, onNavigateToCommunity, onNavigateToQuiz }: StudentDashboardProps) {
+export function StudentDashboard({ 
+  userName, 
+  onNavigateToClassList, 
+  onNavigateToCommunity, 
+  onNavigateToQuiz,
+  onNavigateToMyClasses // <-- TAMBAHKAN INI
+}: StudentDashboardProps) {
+  
   const userStats = {
     points: 1250,
     level: 8,
@@ -77,7 +85,7 @@ export function StudentDashboard({ userName, onNavigateToClassList, onNavigateTo
             className="bg-accent hover:bg-accent/90 text-accent-foreground rounded-2xl h-24 flex flex-col items-center justify-center gap-2 shadow-md active:scale-95 transition-transform"
           >
             <Search className="w-6 h-6" />
-            <span>Cari Kelas</span>
+            <span>Jelajahi Kelas</span>
           </Button>
           <Button 
             onClick={onNavigateToCommunity}
@@ -121,7 +129,10 @@ export function StudentDashboard({ userName, onNavigateToClassList, onNavigateTo
       <div className="px-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-foreground">Kelas Saya</h3>
-          <button className="text-primary text-sm" onClick={onNavigateToClassList}>
+          <button 
+            className="text-primary text-sm" 
+            onClick={onNavigateToMyClasses} // <-- SAMBUNGKAN FUNGSI DI SINI
+          >
             Lihat Semua
           </button>
         </div>

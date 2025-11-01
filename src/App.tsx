@@ -4,7 +4,7 @@ import { RegisterPage } from "./components/RegisterPage";
 import { CoachDashboard } from "./components/CoachDashboard";
 import { StudentDashboard } from "./components/StudentDashboard";
 import { ManageClasses } from "./components/ManageClasses";
-import { ClassList } from "./components/ClassList";
+import { ClassList } from "./components/ClassList"; 
 import { ClassDetail } from "./components/ClassDetail";
 import { ReportsPage } from "./components/ReportsPage";
 import { CommunityPage } from "./components/CommunityPage";
@@ -18,8 +18,11 @@ import { NotificationsPage } from "./components/NotificationsPage";
 import { CreateThreadPage } from "./components/CreateThreadPage";
 import { BottomNav } from "./components/BottomNav";
 import { Toaster } from "./components/ui/sonner";
-import { ThreadDetailPage } from "./components/ThreadDetailPage";
 import { toast } from "sonner@2.0.3";
+import { ThreadDetailPage } from "./components/ThreadDetailPage";
+import { MyClassesPage } from "./components/MyClassesPage";
+import { CheckoutPage } from "./components/CheckoutPage";
+import { CoursePlayerPage } from "./components/CoursePlayerPage";
 
 type Page = 
   | 'login' 
@@ -27,7 +30,7 @@ type Page =
   | 'coach-dashboard' 
   | 'student-dashboard'
   | 'manage-classes'
-  | 'class-list'
+  | 'class-list' // Ini adalah halaman "Jelajahi"
   | 'class-detail'
   | 'reports'
   | 'community'
@@ -39,7 +42,10 @@ type Page =
   | 'change-password'
   | 'notifications'
   | 'create-thread'
-  | 'thread-detail';
+  | 'thread-detail'
+  | 'my-classes'
+  | 'checkout'
+  | 'course-player';
 
 interface User {
   name: string;
@@ -55,8 +61,10 @@ export default function App() {
   const [selectedThreadId, setSelectedThreadId] = useState<number | null>(null);
   const [registerRole, setRegisterRole] = useState<'coach' | 'peserta'>('peserta');
 
+  const [selectedLessonId, setSelectedLessonId] = useState<number | null>(null);
+  const [mockEnrolledClasses, setMockEnrolledClasses] = useState<number[]>([1, 2]); 
+
   const handleLogin = (email: string, password: string, role: 'coach' | 'peserta') => {
-    // Mock login - in real app this would validate credentials
     const mockUser: User = {
       name: role === 'coach' ? 'Dr. Sarah Johnson' : 'Ahmad Rizki',
       email: email,
@@ -64,18 +72,15 @@ export default function App() {
     };
     setUser(mockUser);
     setCurrentPage(role === 'coach' ? 'coach-dashboard' : 'student-dashboard');
+    setActiveTab('home');
     toast.success(`Selamat datang, ${mockUser.name}!`);
   };
 
   const handleRegister = (name: string, email: string, password: string, role: 'coach' | 'peserta') => {
-    // Mock registration
-    const newUser: User = {
-      name: name,
-      email: email,
-      role: role,
-    };
+    const newUser: User = { name, email, role };
     setUser(newUser);
     setCurrentPage(role === 'coach' ? 'coach-dashboard' : 'student-dashboard');
+    setActiveTab('home');
     toast.success('Akun berhasil dibuat!');
   };
 
@@ -85,24 +90,34 @@ export default function App() {
     setActiveTab('home');
     toast.success('Anda telah keluar dari akun');
   };
-
+  
+  // --- LOGIKA TAB YANG DIPERBARUI ---
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
-    
     if (!user) return;
 
     if (tab === 'home') {
       setCurrentPage(user.role === 'coach' ? 'coach-dashboard' : 'student-dashboard');
-    } else if (tab === 'kelas') {
-      if (user.role === 'coach') {
-        setCurrentPage('manage-classes');
-      } else {
+    } else if (tab === 'community') {
+      setCurrentPage('community');
+    } else if (tab === 'profile') {
+      setCurrentPage('profile');
+    }
+
+    if (user.role === 'peserta') {
+      if (tab === 'my-classes') {
+        setCurrentPage('my-classes');
+      } else if (tab === 'kelas') { // "Kelas" untuk peserta adalah "Jelajahi"
         setCurrentPage('class-list');
       }
-    } else if (tab === 'komunitas') {
-      setCurrentPage('community');
-    } else if (tab === 'profil') {
-      setCurrentPage('profile');
+    }
+    
+    if (user.role === 'coach') {
+      if (tab === 'kelas') { // "Kelas" untuk coach adalah "Kelola"
+        setCurrentPage('manage-classes');
+      } else if (tab === 'peserta') {
+        setCurrentPage('students');
+      }
     }
   };
 
@@ -118,10 +133,15 @@ export default function App() {
   const handleNavigateToLogin = () => {
     setCurrentPage('login');
   };
-
+  
   const handleClassClick = (classId: number) => {
     setSelectedClassId(classId);
     setCurrentPage('class-detail');
+  };
+  
+  const handleThreadClick = (threadId: number) => {
+    setSelectedThreadId(threadId);
+    setCurrentPage('thread-detail');
   };
 
   const handleSaveProfile = (name: string, bio: string, phone: string) => {
@@ -130,194 +150,144 @@ export default function App() {
     }
   };
 
-  const handleThreadClick = (threadId: number) => {
-    setSelectedThreadId(threadId);
-    setCurrentPage('thread-detail');
+  const handleGoToCheckout = (classId: number) => {
+    setSelectedClassId(classId);
+    setCurrentPage('checkout');
   };
+
+  const handleCheckoutComplete = () => {
+    if (selectedClassId) {
+      setMockEnrolledClasses([...mockEnrolledClasses, selectedClassId]);
+    }
+    setCurrentPage('class-detail'); 
+  };
+
+  const handlePlayLesson = (lessonId: number) => {
+    setSelectedLessonId(lessonId);
+    setCurrentPage('course-player');
+  };
+
 
   // Render pages based on current state
   const renderPage = () => {
     switch (currentPage) {
       case 'login':
-        return (
-          <LoginPage 
-            onLogin={handleLogin} 
-            onNavigateToRegister={handleNavigateToRegister}
-          />
-        );
-
+        return <LoginPage onLogin={handleLogin} onNavigateToRegister={handleNavigateToRegister} />;
+      
       case 'register':
-        return (
-          <RegisterPage 
-            onRegister={handleRegister} 
-            onNavigateToLogin={handleNavigateToLogin}
-            defaultRole={registerRole}
-          />
-        );
+        return <RegisterPage onRegister={handleRegister} onNavigateToLogin={handleNavigateToLogin} defaultRole={registerRole} />;
 
       case 'coach-dashboard':
         if (!user) return null;
-        return (
-          <CoachDashboard
-            userName={user.name}
-            onNavigateToManageClasses={() => {
-              setCurrentPage('manage-classes');
-              setActiveTab('kelas');
-            }}
-            onNavigateToStudents={() => setCurrentPage('students')}
-            onNavigateToFeedback={() => setCurrentPage('feedback')}
-            onNavigateToReports={() => setCurrentPage('reports')}
-            onNavigateToNotifications={() => setCurrentPage('notifications')}
-          />
-        );
+        return <CoachDashboard userName={user.name} onNavigateToManageClasses={() => handleTabChange('kelas')} onNavigateToStudents={() => handleTabChange('peserta')} onNavigateToFeedback={() => setCurrentPage('feedback')} onNavigateToReports={() => setCurrentPage('reports')} onNavigateToNotifications={() => setCurrentPage('notifications')} />;
 
       case 'student-dashboard':
         if (!user) return null;
-        return (
-          <StudentDashboard
-            userName={user.name}
-            onNavigateToClassList={() => {
-              setCurrentPage('class-list');
-              setActiveTab('kelas');
-            }}
-            onNavigateToCommunity={() => {
-              setCurrentPage('community');
-              setActiveTab('komunitas');
-            }}
-            onNavigateToQuiz={() => setCurrentPage('quiz')}
-          />
-        );
+        return <StudentDashboard 
+                  userName={user.name} 
+                  onNavigateToClassList={() => setCurrentPage('class-list')} 
+                  onNavigateToCommunity={() => handleTabChange('community')} 
+                  onNavigateToQuiz={() => setCurrentPage('quiz')} 
+                  onNavigateToMyClasses={() => { // <-- Tambahkan ini
+                    setCurrentPage('my-classes');
+                    setActiveTab('my-classes');
+                  }}
+               />;
 
       case 'manage-classes':
-        return (
-          <ManageClasses 
-            onBack={handleBackToDashboard}
-          />
-        );
+        return <ManageClasses onBack={handleBackToDashboard} />;
 
-      case 'class-list':
-        return (
-          <ClassList 
-            onBack={handleBackToDashboard}
-            onClassClick={handleClassClick}
-          />
-        );
+      case 'class-list': // Ini halaman "Jelajahi"
+        return <ClassList onBack={handleBackToDashboard} onClassClick={handleClassClick} />;
 
       case 'class-detail':
         if (!user || !selectedClassId) return null;
-        return (
-          <ClassDetail 
-            classId={selectedClassId}
-            userRole={user.role}
-            onBack={() => {
-              setCurrentPage(user.role === 'coach' ? 'manage-classes' : 'class-list');
-            }}
-          />
-        );
+        return <ClassDetail 
+                  classId={selectedClassId} 
+                  userRole={user.role} 
+                  // Logika onBack yang diperbarui
+                  onBack={() => {
+                    if (user.role === 'coach') {
+                      setCurrentPage('manage-classes');
+                      setActiveTab('kelas');
+                      return;
+                    }
+                    // Cek apakah kelas ini sudah dimiliki
+                    const isEnrolled = mockEnrolledClasses.includes(selectedClassId);
+                    if (isEnrolled) {
+                      setCurrentPage('my-classes');
+                      setActiveTab('my-classes'); // Set tab aktif!
+                    } else {
+                      setCurrentPage('class-list');
+                      // Tidak perlu set tab, karena 'class-list' tidak ada di tab
+                    }
+                  }}
+                  onGoToCheckout={handleGoToCheckout}
+                  onPlayLesson={handlePlayLesson}
+                  isEnrolled={mockEnrolledClasses.includes(selectedClassId)} 
+               />;
 
       case 'reports':
-        return (
-          <ReportsPage 
-            onBack={handleBackToDashboard}
-          />
-        );
+        return <ReportsPage onBack={handleBackToDashboard} />;
 
       case 'community':
-        return (
-          <CommunityPage 
-            onBack={handleBackToDashboard}
-            onCreateThread={() => setCurrentPage('create-thread')}
-            onThreadClick={handleThreadClick}
-          />
-        );
+        return <CommunityPage onBack={handleBackToDashboard} onCreateThread={() => setCurrentPage('create-thread')} onThreadClick={handleThreadClick} />;
 
       case 'profile':
         if (!user) return null;
-        return (
-          <ProfilePage 
-            userName={user.name}
-            userRole={user.role}
-            onBack={handleBackToDashboard}
-            onLogout={handleLogout}
-            onEditProfile={() => setCurrentPage('edit-profile')}
-            onChangePassword={() => setCurrentPage('change-password')}
-          />
-        );
+        return <ProfilePage userName={user.name} userRole={user.role} onBack={handleBackToDashboard} onLogout={handleLogout} onEditProfile={() => setCurrentPage('edit-profile')} onChangePassword={() => setCurrentPage('change-password')} />;
 
       case 'students':
-        return (
-          <StudentsPage 
-            onBack={handleBackToDashboard}
-          />
-        );
+        return <StudentsPage onBack={handleBackToDashboard} />;
 
       case 'feedback':
-        return (
-          <FeedbackPage 
-            onBack={handleBackToDashboard}
-          />
-        );
+        return <FeedbackPage onBack={handleBackToDashboard} />;
 
       case 'quiz':
-        return (
-          <QuizPage 
-            onBack={handleBackToDashboard}
-            className="Teknik Presentasi Efektif"
-          />
-        );
+        return <QuizPage onBack={handleBackToDashboard} className="Teknik Presentasi Efektif" />;
 
       case 'edit-profile':
         if (!user) return null;
-        return (
-          <EditProfilePage 
-            userName={user.name}
-            userEmail={user.email}
-            userRole={user.role}
-            onBack={() => setCurrentPage('profile')}
-            onSave={handleSaveProfile}
-          />
-        );
+        return <EditProfilePage userName={user.name} userEmail={user.email} userRole={user.role} onBack={() => setCurrentPage('profile')} onSave={handleSaveProfile} />;
 
       case 'change-password':
-        return (
-          <ChangePasswordPage 
-            onBack={() => setCurrentPage('profile')}
-          />
-        );
+        return <ChangePasswordPage onBack={() => setCurrentPage('profile')} />;
 
       case 'notifications':
         if (!user) return null;
-        return (
-          <NotificationsPage 
-            onBack={handleBackToDashboard}
-            userRole={user.role}
-          />
-        );
+        return <NotificationsPage onBack={handleBackToDashboard} userRole={user.role} />;
 
       case 'create-thread':
-        return (
-          <CreateThreadPage 
-            onBack={() => setCurrentPage('community')}
-            onThreadCreated={() => {
-              setCurrentPage('community');
-            }}
-          />
-        );
+        return <CreateThreadPage onBack={() => setCurrentPage('community')} onThreadCreated={() => setCurrentPage('community')} />;
+      
+      case 'thread-detail':
+        if (!selectedThreadId) return null;
+        return <ThreadDetailPage onBack={() => setCurrentPage('community')} threadId={selectedThreadId} />;
 
-        case 'thread-detail':
-        return (
-          <ThreadDetailPage
-            onBack={() => setCurrentPage('community')}
-            threadId={selectedThreadId || 0}
-          />
-        );
+      case 'my-classes':
+        return <MyClassesPage onBack={handleBackToDashboard} onClassClick={handleClassClick} />;
+
+      case 'checkout':
+        return <CheckoutPage onBack={() => setCurrentPage('class-detail')} onCheckoutComplete={handleCheckoutComplete} />;
+
+      case 'course-player':
+        if (!selectedLessonId) return null;
+        return <CoursePlayerPage 
+                  onBack={() => setCurrentPage('class-detail')} 
+                  lessonId={selectedLessonId} 
+               />;
 
       default:
         return null;
     }
   };
 
-  const showBottomNav = user && !['login', 'register', 'quiz', 'edit-profile', 'change-password', 'notifications', 'create-thread', 'thread-detail'].includes(currentPage);
+  // Halaman yang tidak menampilkan Navigasi Bawah
+  const showBottomNav = user && ![
+    'login', 'register', 'quiz', 'edit-profile', 'change-password', 
+    'notifications', 'create-thread', 'thread-detail', 'checkout', 
+    'course-player', 'class-detail', 'class-list' // 'class-list' (jelajahi) juga disembunyikan
+  ].includes(currentPage);
 
   return (
     <div className="relative max-w-md mx-auto bg-background min-h-screen">

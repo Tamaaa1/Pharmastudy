@@ -1,4 +1,4 @@
-import { ArrowLeft, Calendar, MapPin, Users, Star, Play } from "lucide-react";
+import { ArrowLeft, Calendar, MapPin, Users, Star, Play, Lock } from "lucide-react";
 import { Button } from "./ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -10,9 +10,12 @@ interface ClassDetailProps {
   classId: number;
   userRole: 'coach' | 'peserta';
   onBack: () => void;
+  onGoToCheckout: (classId: number) => void;
+  onPlayLesson: (lessonId: number) => void;
+  isEnrolled: boolean;
 }
 
-export function ClassDetail({ classId, userRole, onBack }: ClassDetailProps) {
+export function ClassDetail({ classId, userRole, onBack, onGoToCheckout, onPlayLesson, isEnrolled }: ClassDetailProps) {
   const classData = {
     id: classId,
     title: 'Teknik Presentasi Efektif',
@@ -105,9 +108,20 @@ export function ClassDetail({ classId, userRole, onBack }: ClassDetailProps) {
               <Play className="w-5 h-5 mr-2" />
               Mulai Kelas
             </Button>
+          ) : isEnrolled ? (
+            <Button 
+              onClick={() => onPlayLesson(materials[0].id)}
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl h-12 shadow-md"
+            >
+              <Play className="w-5 h-5 mr-2" />
+              Lanjutkan Belajar
+            </Button>
           ) : (
-            <Button className="w-full bg-accent hover:bg-accent/90 text-accent-foreground rounded-2xl h-12 shadow-md">
-              Daftar Kelas
+            <Button 
+              onClick={() => onGoToCheckout(classId)}
+              className="w-full bg-accent hover:bg-accent/90 text-accent-foreground rounded-2xl h-12 shadow-md"
+            >
+              Daftar Kelas (Rp 150.000)
             </Button>
           )}
         </div>
@@ -126,25 +140,40 @@ export function ClassDetail({ classId, userRole, onBack }: ClassDetailProps) {
           <TabsContent value="materi" className="space-y-3">
             <h3 className="text-foreground mb-4">Materi Pembelajaran</h3>
             {materials.map((material) => (
-              <div 
+              <button
                 key={material.id}
-                className="bg-card rounded-2xl p-4 shadow-md hover:shadow-lg transition-all cursor-pointer active:scale-95"
+                onClick={() => onPlayLesson(material.id)}
+                disabled={!isEnrolled}
+                className="w-full bg-card rounded-2xl p-4 shadow-md hover:shadow-lg transition-all cursor-pointer active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                <div className="flex items-center gap-4">
-                  <div className={`w-10 h-10 rounded-2xl flex items-center justify-center ${
-                    material.completed ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
-                  }`}>
-                    <Play className="w-5 h-5" />
+                {/* --- AWAL PERBAIKAN VISUAL --- */}
+                <div className="flex items-center justify-between gap-4 w-full">
+                  {/* Bagian Kiri: Ikon & Judul */}
+                  <div className="flex items-center gap-4 flex-1 min-w-0">
+                    <div className={`w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0 ${
+                      material.completed && isEnrolled ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+                    }`}>
+                      <Play className="w-5 h-5" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="text-foreground text-sm mb-1 truncate">{material.title}</h4>
+                      <p className="text-xs text-muted-foreground">{material.duration}</p>
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <h4 className="text-foreground text-sm mb-1">{material.title}</h4>
-                    <p className="text-xs text-muted-foreground">{material.duration}</p>
+
+                  {/* Bagian Kanan: Status (Akan Rata Kanan) */}
+                  <div className="flex-shrink-0">
+                    {isEnrolled ? (
+                      material.completed && (
+                        <div className="text-primary text-xs font-medium">✓ Selesai</div>
+                      )
+                    ) : (
+                      <Lock className="w-4 h-4 text-muted-foreground" />
+                    )}
                   </div>
-                  {material.completed && (
-                    <div className="text-primary text-xs">✓ Selesai</div>
-                  )}
                 </div>
-              </div>
+                {/* --- AKHIR PERBAIKAN VISUAL --- */}
+              </button>
             ))}
           </TabsContent>
 
@@ -166,13 +195,13 @@ export function ClassDetail({ classId, userRole, onBack }: ClassDetailProps) {
           <TabsContent value="feedback" className="space-y-4">
             <div className="bg-card rounded-2xl p-6 shadow-md">
               <h4 className="text-foreground mb-4">Berikan Rating & Komentar</h4>
-              <div className="flex gap-2 mb-4">
+              <div className="flex justify-center gap-2 mb-4">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
                     key={star}
                     className="p-2 hover:scale-110 transition-transform active:scale-95"
                   >
-                    <Star className="w-6 h-6 text-accent" />
+                    <Star className="w-6 h-6 text-accent/30 hover:text-accent" />
                   </button>
                 ))}
               </div>
