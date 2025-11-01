@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ArrowLeft, MessageSquare, ThumbsUp, Clock, Send, User } from "lucide-react";
 import { Button } from "./ui/button";
 import { Avatar, AvatarFallback } from "./ui/avatar";
-import { Badge } <./ui/badge";
+import { Badge } from "./ui/badge";
 import { Textarea } from "./ui/textarea";
 import { toast } from "sonner@2.0.3";
 
