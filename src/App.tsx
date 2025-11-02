@@ -23,6 +23,7 @@ import { ThreadDetailPage } from "./components/ThreadDetailPage";
 import { MyClassesPage } from "./components/MyClassesPage";
 import { CheckoutPage } from "./components/CheckoutPage";
 import { CoursePlayerPage } from "./components/CoursePlayerPage";
+import { BadgeListPage } from "./components/BadgeListPage";
 
 type Page = 
   | 'login' 
@@ -30,7 +31,7 @@ type Page =
   | 'coach-dashboard' 
   | 'student-dashboard'
   | 'manage-classes'
-  | 'class-list' // Ini adalah halaman "Jelajahi"
+  | 'class-list'
   | 'class-detail'
   | 'reports'
   | 'community'
@@ -45,7 +46,8 @@ type Page =
   | 'thread-detail'
   | 'my-classes'
   | 'checkout'
-  | 'course-player';
+  | 'course-player'
+  | 'badge-list';
 
 interface User {
   name: string;
@@ -121,6 +123,10 @@ export default function App() {
     }
   };
 
+  const handleNavigateToBadgeList = () => {
+    setCurrentPage('badge-list');
+  };
+
   const handleBackToDashboard = () => {
     setActiveTab('home');
     setCurrentPage(user?.role === 'coach' ? 'coach-dashboard' : 'student-dashboard');
@@ -188,10 +194,11 @@ export default function App() {
                   onNavigateToClassList={() => setCurrentPage('class-list')} 
                   onNavigateToCommunity={() => handleTabChange('community')} 
                   onNavigateToQuiz={() => setCurrentPage('quiz')} 
-                  onNavigateToMyClasses={() => { // <-- Tambahkan ini
+                  onNavigateToMyClasses={() => {
                     setCurrentPage('my-classes');
                     setActiveTab('my-classes');
                   }}
+                  onNavigateToBadgeList={handleNavigateToBadgeList}
                />;
 
       case 'manage-classes':
@@ -276,6 +283,9 @@ export default function App() {
                   onBack={() => setCurrentPage('class-detail')} 
                   lessonId={selectedLessonId} 
                />;
+      
+      case 'badge-list':
+        return <BadgeListPage onBack={handleBackToDashboard} />;
 
       default:
         return null;
@@ -286,7 +296,7 @@ export default function App() {
   const showBottomNav = user && ![
     'login', 'register', 'quiz', 'edit-profile', 'change-password', 
     'notifications', 'create-thread', 'thread-detail', 'checkout', 
-    'course-player', 'class-detail', 'class-list' // 'class-list' (jelajahi) juga disembunyikan
+    'course-player', 'class-detail', 'class-list', 'badge-list'
   ].includes(currentPage);
 
   return (

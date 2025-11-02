@@ -6,10 +6,11 @@ import { ImageWithFallback } from "./figma/ImageWithFallback";
 
 interface StudentDashboardProps {
   userName: string;
-  onNavigateToClassList: () => void; // Untuk 'Jelajahi Kelas'
+  onNavigateToClassList: () => void;
   onNavigateToCommunity: () => void;
   onNavigateToQuiz: () => void;
-  onNavigateToMyClasses: () => void; // <-- TAMBAHKAN INI
+  onNavigateToMyClasses: () => void;
+  onNavigateToBadgeList: () => void;
 }
 
 export function StudentDashboard({ 
@@ -17,7 +18,8 @@ export function StudentDashboard({
   onNavigateToClassList, 
   onNavigateToCommunity, 
   onNavigateToQuiz,
-  onNavigateToMyClasses // <-- TAMBAHKAN INI
+  onNavigateToMyClasses,
+  onNavigateToBadgeList
 }: StudentDashboardProps) {
   
   const userStats = {
@@ -108,7 +110,7 @@ export function StudentDashboard({
       <div className="px-6 mb-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-foreground">Badge Saya</h3>
-          <button className="text-primary text-sm">Lihat Semua</button>
+          <button onClick={onNavigateToBadgeList} className="text-primary text-sm">Lihat Semua</button>
         </div>
         <div className="flex gap-3 overflow-x-auto pb-2">
           {badges.map((badge) => (
