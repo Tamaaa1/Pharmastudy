@@ -12,45 +12,74 @@ export function CommunityPage({ onBack, onCreateThread }: CommunityPageProps) {
   const threads = [
     {
       id: 1,
-      author: 'Ahmad Rizki',
+      author: "Farmasis Muda",
       authorLevel: 8,
-      title: 'Tips Mengatasi Nervous Saat Presentasi',
-      content: 'Saya sering nervous saat presentasi di depan banyak orang. Ada yang punya tips efektif?',
-      category: 'Public Speaking',
-      replies: 12,
-      likes: 24,
-      timeAgo: '2 jam lalu',
+      title: "Diskusi: Mekanisme Aksi Antibiotik",
+      content:
+        "Halo teman-teman, ada yang bisa jelaskan lebih detail tentang mekanisme aksi antibiotik golongan Beta-Laktam?",
+      category: "Farmakologi",
+      replies: 15,
+      likes: 30,
+      timeAgo: "3 jam lalu",
     },
     {
       id: 2,
-      author: 'Siti Nurhaliza',
+      author: "Mahasiswa Farmasi",
       authorLevel: 12,
-      title: 'Sharing: Teknik Pomodoro untuk Produktivitas',
-      content: 'Mau share pengalaman menggunakan teknik Pomodoro. Sangat membantu meningkatkan fokus!',
-      category: 'Productivity',
-      replies: 8,
-      likes: 18,
-      timeAgo: '5 jam lalu',
+      title: "Pertanyaan: Cara Identifikasi Senyawa Aktif Tanaman",
+      content:
+        "Saya sedang meneliti tanaman obat. Ada tips atau metode standar untuk mengidentifikasi senyawa aktifnya?",
+      category: "Farmakognosi",
+      replies: 10,
+      likes: 22,
+      timeAgo: "6 jam lalu",
     },
     {
       id: 3,
-      author: 'Budi Santoso',
-      authorLevel: 5,
-      title: 'Rekomendasi Buku Leadership',
-      content: 'Ada yang bisa rekomendasikan buku tentang leadership yang bagus untuk pemula?',
-      category: 'Leadership',
-      replies: 15,
-      likes: 32,
-      timeAgo: '1 hari lalu',
+      author: "Apoteker Klinik",
+      authorLevel: 15,
+      title: "Studi Kasus: Interaksi Obat pada Pasien Geriatri",
+      content:
+        "Mari berdiskusi tentang studi kasus pasien geriatri dengan polifarmasi. Bagaimana manajemen interaksi obatnya?",
+      category: "Farmasi Klinis",
+      replies: 20,
+      likes: 45,
+      timeAgo: "1 hari lalu",
+    },
+    {
+      id: 4,
+      author: "Rina Kimia",
+      authorLevel: 7,
+      title: "Tips Mempelajari Kimia Medisinal",
+      content:
+        "Kimia medisinal cukup menantang. Ada tips dari senior untuk mempermudah pemahaman?",
+      category: "Kimia Farmasi",
+      replies: 8,
+      likes: 15,
+      timeAgo: "1 hari lalu",
+    },
+    {
+      id: 5,
+      author: "Budi Farmasetika",
+      authorLevel: 9,
+      title: "Prosedur Pembuatan Sediaan Suspensi",
+      content:
+        "Ada yang punya pengalaman atau referensi tentang prosedur standar pembuatan sediaan suspensi di lab?",
+      category: "Farmasetika",
+      replies: 12,
+      likes: 28,
+      timeAgo: "2 hari lalu",
     },
   ];
 
   const categories = [
-    { name: 'Semua', count: 156 },
-    { name: 'Public Speaking', count: 45 },
-    { name: 'Leadership', count: 38 },
-    { name: 'Productivity', count: 42 },
-    { name: 'Tips & Trik', count: 31 },
+    { name: "Semua", count: 200 },
+    { name: "Farmakologi", count: 55 },
+    { name: "Farmasetika", count: 48 },
+    { name: "Kimia Farmasi", count: 40 },
+    { name: "Farmakognosi", count: 35 },
+    { name: "Farmasi Klinis", count: 22 },
+    { name: "Regulasi Obat", count: 18 },
   ];
 
   return (
@@ -64,8 +93,12 @@ export function CommunityPage({ onBack, onCreateThread }: CommunityPageProps) {
           <ArrowLeft className="w-5 h-5" />
           <span>Kembali</span>
         </button>
-        <h2 className="text-primary-foreground mb-2">Forum Komunitas</h2>
-        <p className="text-primary-foreground/80 text-sm">Berbagi pengalaman dan belajar bersama</p>
+        <h2 className="text-primary-foreground mb-2">
+          Forum Komunitas Farmasi
+        </h2>
+        <p className="text-primary-foreground/80 text-sm">
+          Berbagi pengetahuan, pengalaman, dan berdiskusi seputar farmasi
+        </p>
       </div>
 
       {/* Create Thread Button */}
@@ -75,7 +108,7 @@ export function CommunityPage({ onBack, onCreateThread }: CommunityPageProps) {
           className="w-full bg-accent hover:bg-accent/90 text-accent-foreground rounded-2xl h-12 shadow-md active:scale-95 transition-transform"
         >
           <Plus className="w-5 h-5 mr-2" />
-          Buat Thread Baru
+          Buat Diskusi Baru
         </Button>
       </div>
 
@@ -88,7 +121,9 @@ export function CommunityPage({ onBack, onCreateThread }: CommunityPageProps) {
               className="flex-shrink-0 px-4 py-2 bg-card rounded-2xl shadow-md hover:shadow-lg transition-all active:scale-95"
             >
               <span className="text-foreground text-sm">{category.name}</span>
-              <span className="ml-2 text-xs text-muted-foreground">({category.count})</span>
+              <span className="ml-2 text-xs text-muted-foreground">
+                ({category.count})
+              </span>
             </button>
           ))}
         </div>
@@ -132,7 +167,9 @@ export function CommunityPage({ onBack, onCreateThread }: CommunityPageProps) {
                     {thread.category}
                   </Badge>
                 </div>
-                <p className="text-sm text-muted-foreground line-clamp-2">{thread.content}</p>
+                <p className="text-sm text-muted-foreground line-clamp-2">
+                  {thread.content}
+                </p>
               </div>
 
               {/* Engagement Stats */}
@@ -151,8 +188,8 @@ export function CommunityPage({ onBack, onCreateThread }: CommunityPageProps) {
         </div>
 
         {/* Load More */}
-        <Button 
-          variant="outline" 
+        <Button
+          variant="outline"
           className="w-full mt-6 rounded-2xl h-12 active:scale-95 transition-transform"
         >
           Muat Lebih Banyak

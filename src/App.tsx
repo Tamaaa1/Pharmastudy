@@ -16,14 +16,15 @@ import { EditProfilePage } from "./components/EditProfilePage";
 import { ChangePasswordPage } from "./components/ChangePasswordPage";
 import { NotificationsPage } from "./components/NotificationsPage";
 import { CreateThreadPage } from "./components/CreateThreadPage";
+import { PackagesPage } from "./components/PackagesPage";
 import { BottomNav } from "./components/BottomNav";
 import { Toaster } from "./components/ui/sonner";
 import { toast } from "sonner@2.0.3";
 
-type Page = 
-  | 'login' 
-  | 'register' 
-  | 'coach-dashboard' 
+type Page =
+  | 'login'
+  | 'register'
+  | 'coach-dashboard'
   | 'student-dashboard'
   | 'manage-classes'
   | 'class-list'
@@ -37,12 +38,14 @@ type Page =
   | 'edit-profile'
   | 'change-password'
   | 'notifications'
-  | 'create-thread';
+  | 'create-thread'
+  | 'packages';
 
 interface User {
   name: string;
   email: string;
-  role: 'coach' | 'peserta';
+  role: 'coach' | 'peserta' | 'premium-user';
+  package?: 'free' | 'premium';
 }
 
 export default function App() {
@@ -50,26 +53,28 @@ export default function App() {
   const [user, setUser] = useState<User | null>(null);
   const [activeTab, setActiveTab] = useState('home');
   const [selectedClassId, setSelectedClassId] = useState<number | null>(null);
-  const [registerRole, setRegisterRole] = useState<'coach' | 'peserta'>('peserta');
+  const [registerRole, setRegisterRole] = useState<'coach' | 'peserta' | 'premium-user'>('peserta');
 
-  const handleLogin = (email: string, password: string, role: 'coach' | 'peserta') => {
+  const handleLogin = (email: string, password: string, role: 'coach' | 'peserta' | 'premium-user') => {
     // Mock login - in real app this would validate credentials
     const mockUser: User = {
-      name: role === 'coach' ? 'Dr. Sarah Johnson' : 'Ahmad Rizki',
+      name: role === 'coach' ? 'Dr. Sarah Johnson' : role === 'premium-user' ? 'Premium User' : 'Ahmad Rizki',
       email: email,
       role: role,
+      package: role === 'peserta' ? 'free' : role === 'premium-user' ? 'premium' : undefined, // Only students have packages, coaches have full access
     };
     setUser(mockUser);
     setCurrentPage(role === 'coach' ? 'coach-dashboard' : 'student-dashboard');
     toast.success(`Selamat datang, ${mockUser.name}!`);
   };
 
-  const handleRegister = (name: string, email: string, password: string, role: 'coach' | 'peserta') => {
+  const handleRegister = (name: string, email: string, password: string, role: 'coach' | 'peserta' | 'premium-user') => {
     // Mock registration
     const newUser: User = {
       name: name,
       email: email,
       role: role,
+      package: role === 'peserta' ? 'free' : role === 'premium-user' ? 'premium' : undefined, // Only students have packages, coaches have full access
     };
     setUser(newUser);
     setCurrentPage(role === 'coach' ? 'coach-dashboard' : 'student-dashboard');
@@ -177,6 +182,7 @@ export default function App() {
               setActiveTab('komunitas');
             }}
             onNavigateToQuiz={() => setCurrentPage('quiz')}
+            onNavigateToPackages={() => setCurrentPage('packages')}
           />
         );
 
@@ -189,21 +195,23 @@ export default function App() {
 
       case 'class-list':
         return (
-          <ClassList 
+          <ClassList
             onBack={handleBackToDashboard}
             onClassClick={handleClassClick}
+            userPackage={user?.package}
           />
         );
 
       case 'class-detail':
         if (!user || !selectedClassId) return null;
         return (
-          <ClassDetail 
+          <ClassDetail
             classId={selectedClassId}
             userRole={user.role}
             onBack={() => {
               setCurrentPage(user.role === 'coach' ? 'manage-classes' : 'class-list');
             }}
+            userPackage={user.package}
           />
         );
 
@@ -287,11 +295,18 @@ export default function App() {
 
       case 'create-thread':
         return (
-          <CreateThreadPage 
+          <CreateThreadPage
             onBack={() => setCurrentPage('community')}
             onThreadCreated={() => {
               setCurrentPage('community');
             }}
+          />
+        );
+
+      case 'packages':
+        return (
+          <PackagesPage
+            onBack={() => setCurrentPage('student-dashboard')}
           />
         );
 
@@ -300,7 +315,7 @@ export default function App() {
     }
   };
 
-  const showBottomNav = user && !['login', 'register', 'quiz', 'edit-profile', 'change-password', 'notifications', 'create-thread'].includes(currentPage);
+  const showBottomNav = user && !['login', 'register', 'quiz', 'edit-profile', 'change-password', 'notifications', 'create-thread', 'packages'].includes(currentPage);
 
   return (
     <div className="relative max-w-md mx-auto bg-background min-h-screen">

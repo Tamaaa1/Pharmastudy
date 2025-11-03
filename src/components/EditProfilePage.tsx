@@ -10,19 +10,30 @@ import { toast } from "sonner@2.0.3";
 interface EditProfilePageProps {
   userName: string;
   userEmail: string;
-  userRole: 'coach' | 'peserta';
+  userRole: "coach" | "peserta";
   onBack: () => void;
   onSave: (name: string, bio: string, phone: string) => void;
 }
 
-export function EditProfilePage({ userName, userEmail, userRole, onBack, onSave }: EditProfilePageProps) {
+export function EditProfilePage({
+  userName,
+  userEmail,
+  userRole,
+  onBack,
+  onSave,
+}: EditProfilePageProps) {
   const [name, setName] = useState(userName);
-  const [bio, setBio] = useState(userRole === 'coach' 
-    ? "Passionate coach dengan 10+ tahun pengalaman di bidang public speaking dan leadership development."
-    : "Saya adalah learner yang antusias ingin terus berkembang dan belajar hal baru setiap hari."
+  const [bio, setBio] = useState(
+    userRole === "coach"
+      ? "Apoteker ahli dengan 10+ tahun pengalaman di farmasi klinis dan pengembangan obat."
+      : "Mahasiswa farmasi yang antusias dan ingin berkontribusi pada kesehatan masyarakat melalui ilmu farmasi.",
   );
   const [phone, setPhone] = useState("+62 812-3456-7890");
-  const [organization, setOrganization] = useState(userRole === 'coach' ? "PT. Edukasi Indonesia" : "PT. Tech Startup");
+  const [organization, setOrganization] = useState(
+    userRole === "coach"
+      ? "Fakultas Farmasi Universitas Tanjung Pura"
+      : "Universitas Tanjung Pura",
+  );
 
   const handleSave = () => {
     onSave(name, bio, phone);
@@ -41,8 +52,10 @@ export function EditProfilePage({ userName, userEmail, userRole, onBack, onSave 
           <ArrowLeft className="w-5 h-5" />
           <span>Kembali</span>
         </button>
-        <h2 className="text-primary-foreground">Edit Profil</h2>
-        <p className="text-primary-foreground/80 text-sm mt-1">Perbarui informasi profil Anda</p>
+        <h2 className="text-primary-foreground">Edit Profil Farmasi</h2>
+        <p className="text-primary-foreground/80 text-sm mt-1">
+          Perbarui informasi profil anda
+        </p>
       </div>
 
       <div className="px-6 space-y-6">
@@ -58,7 +71,9 @@ export function EditProfilePage({ userName, userEmail, userRole, onBack, onSave 
               <Camera className="w-5 h-5" />
             </button>
           </div>
-          <p className="text-sm text-muted-foreground mt-3">Klik untuk ubah foto</p>
+          <p className="text-sm text-muted-foreground mt-3">
+            Klik untuk ubah foto profil
+          </p>
         </div>
 
         {/* Form */}
@@ -74,7 +89,7 @@ export function EditProfilePage({ userName, userEmail, userRole, onBack, onSave 
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">Email Institusi/Pribadi</Label>
             <Input
               id="email"
               type="email"
@@ -82,7 +97,9 @@ export function EditProfilePage({ userName, userEmail, userRole, onBack, onSave 
               disabled
               className="rounded-2xl h-12 bg-muted cursor-not-allowed"
             />
-            <p className="text-xs text-muted-foreground">Email tidak dapat diubah</p>
+            <p className="text-xs text-muted-foreground">
+              Email tidak dapat diubah
+            </p>
           </div>
 
           <div className="space-y-2">
@@ -98,7 +115,9 @@ export function EditProfilePage({ userName, userEmail, userRole, onBack, onSave 
 
           <div className="space-y-2">
             <Label htmlFor="organization">
-              {userRole === 'coach' ? 'Institusi/Organisasi' : 'Perusahaan'}
+              {userRole === "coach"
+                ? "Institusi/Afiliasi Farmasi"
+                : "Institusi/Universitas"}
             </Label>
             <Input
               id="organization"
@@ -109,13 +128,15 @@ export function EditProfilePage({ userName, userEmail, userRole, onBack, onSave 
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="bio">Bio</Label>
+            <Label htmlFor="bio">
+              Bio (Deskripsi Diri/Bidang Minat Farmasi)
+            </Label>
             <Textarea
               id="bio"
               value={bio}
               onChange={(e) => setBio(e.target.value)}
               className="rounded-2xl min-h-28"
-              placeholder="Ceritakan tentang diri Anda..."
+              placeholder="Ceritakan tentang latar belakang atau minat farmasi Anda..."
             />
           </div>
         </div>
@@ -127,7 +148,7 @@ export function EditProfilePage({ userName, userEmail, userRole, onBack, onSave 
             className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl h-12 shadow-md active:scale-95 transition-transform"
           >
             <Save className="w-5 h-5 mr-2" />
-            Simpan Perubahan
+            Simpan Perubahan Profil Farmasi
           </Button>
           <Button
             onClick={onBack}

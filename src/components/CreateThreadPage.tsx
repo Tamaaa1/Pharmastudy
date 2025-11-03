@@ -4,7 +4,13 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 import { toast } from "sonner@2.0.3";
 
 interface CreateThreadPageProps {
@@ -12,36 +18,42 @@ interface CreateThreadPageProps {
   onThreadCreated: () => void;
 }
 
-export function CreateThreadPage({ onBack, onThreadCreated }: CreateThreadPageProps) {
+export function CreateThreadPage({
+  onBack,
+  onThreadCreated,
+}: CreateThreadPageProps) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [category, setCategory] = useState("");
 
   const categories = [
-    "Public Speaking",
-    "Leadership",
-    "Productivity",
-    "Tips & Trik",
-    "Sharing Pengalaman",
-    "Tanya Jawab",
+    "Farmakologi",
+    "Farmasetika",
+    "Kimia Farmasi",
+    "Farmakognosi",
+    "Farmasi Klinis",
+    "Regulasi & Etika Obat",
+    "Edukasi Obat",
+    "Pengalaman KP/Praktek",
+    "Tanya Jawab Umum Farmasi",
   ];
 
   const handleSubmit = () => {
     if (!title.trim()) {
-      toast.error("Judul thread harus diisi!");
+      toast.error("Judul diskusi harus diisi!");
       return;
     }
     if (!content.trim()) {
-      toast.error("Konten thread harus diisi!");
+      toast.error("Konten diskusi harus diisi!");
       return;
     }
     if (!category) {
-      toast.error("Pilih kategori thread!");
+      toast.error("Pilih kategori diskusi!");
       return;
     }
 
     // Simulate thread creation
-    toast.success("Thread berhasil dibuat!");
+    toast.success("Diskusi berhasil dibuat!");
     setTimeout(() => {
       onThreadCreated();
     }, 500);
@@ -58,20 +70,22 @@ export function CreateThreadPage({ onBack, onThreadCreated }: CreateThreadPagePr
           <ArrowLeft className="w-5 h-5" />
           <span>Kembali</span>
         </button>
-        <h2 className="text-primary-foreground">Buat Thread Baru</h2>
-        <p className="text-primary-foreground/80 text-sm mt-1">Mulai diskusi dengan komunitas</p>
+        <h2 className="text-primary-foreground">Buat Diskusi Baru</h2>
+        <p className="text-primary-foreground/80 text-sm mt-1">
+          Mulai topik diskusi dengan komunitas farmasi
+        </p>
       </div>
 
       <div className="px-6">
         <div className="bg-card rounded-2xl p-6 shadow-md space-y-5">
           {/* Title */}
           <div className="space-y-2">
-            <Label htmlFor="title">Judul Thread</Label>
+            <Label htmlFor="title">Judul Diskusi</Label>
             <Input
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Contoh: Tips Mengatasi Nervous Saat Presentasi"
+              placeholder="Contoh: Mekanisme Kerja Obat Antihipertensi"
               className="rounded-2xl h-12"
               maxLength={100}
             />
@@ -85,7 +99,7 @@ export function CreateThreadPage({ onBack, onThreadCreated }: CreateThreadPagePr
             <Label htmlFor="category">Kategori</Label>
             <Select value={category} onValueChange={setCategory}>
               <SelectTrigger className="rounded-2xl h-12">
-                <SelectValue placeholder="Pilih kategori" />
+                <SelectValue placeholder="Pilih kategori farmasi" />
               </SelectTrigger>
               <SelectContent>
                 {categories.map((cat) => (
@@ -99,12 +113,12 @@ export function CreateThreadPage({ onBack, onThreadCreated }: CreateThreadPagePr
 
           {/* Content */}
           <div className="space-y-2">
-            <Label htmlFor="content">Konten</Label>
+            <Label htmlFor="content">Isi Diskusi</Label>
             <Textarea
               id="content"
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              placeholder="Tulis pertanyaan atau topik diskusi Anda di sini..."
+              placeholder="Tulis pertanyaan, studi kasus, atau topik diskusi Anda di sini..."
               className="rounded-2xl min-h-40"
               maxLength={1000}
             />
@@ -115,12 +129,17 @@ export function CreateThreadPage({ onBack, onThreadCreated }: CreateThreadPagePr
 
           {/* Tips */}
           <div className="bg-accent/10 rounded-2xl p-4 border border-accent/20">
-            <h4 className="text-foreground text-sm mb-2">💡 Tips Membuat Thread:</h4>
+            <h4 className="text-foreground text-sm mb-2">
+              💡 Tips Membuat Diskusi Farmasi yang Baik:
+            </h4>
             <ul className="space-y-1 text-xs text-muted-foreground">
-              <li>• Gunakan judul yang jelas dan spesifik</li>
-              <li>• Pilih kategori yang sesuai</li>
-              <li>• Jelaskan konteks dengan detail</li>
-              <li>• Bersikap sopan dan menghargai pendapat orang lain</li>
+              <li>• Gunakan judul yang jelas dan spesifik terkait farmasi</li>
+              <li>• Pilih kategori farmasi yang paling sesuai</li>
+              <li>• Jelaskan konteks atau pertanyaan dengan detail</li>
+              <li>• Sertakan sumber (jika ada) untuk argumen Anda</li>
+              <li>
+                • Bersikap sopan dan menghargai pendapat rekan farmasi lainnya
+              </li>
             </ul>
           </div>
         </div>
@@ -132,7 +151,7 @@ export function CreateThreadPage({ onBack, onThreadCreated }: CreateThreadPagePr
             className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl h-12 shadow-md active:scale-95 transition-transform"
           >
             <Send className="w-5 h-5 mr-2" />
-            Posting Thread
+            Posting Diskusi
           </Button>
           <Button
             onClick={onBack}
