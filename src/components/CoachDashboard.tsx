@@ -1,4 +1,11 @@
-import { BookOpen, Users, MessageSquare, TrendingUp, Bell, Plus } from "lucide-react";
+import {
+  BookOpen,
+  Users,
+  MessageSquare,
+  TrendingUp,
+  Bell,
+  Plus,
+} from "lucide-react";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 
@@ -11,53 +18,63 @@ interface CoachDashboardProps {
   onNavigateToNotifications: () => void;
 }
 
-export function CoachDashboard({ 
-  userName, 
+export function CoachDashboard({
+  userName,
   onNavigateToManageClasses,
   onNavigateToStudents,
   onNavigateToFeedback,
   onNavigateToReports,
-  onNavigateToNotifications
+  onNavigateToNotifications,
 }: CoachDashboardProps) {
   const stats = [
-    { label: 'Kelas Aktif', value: '12', icon: BookOpen, color: 'bg-primary' },
-    { label: 'Total Peserta', value: '248', icon: Users, color: 'bg-accent' },
-    { label: 'Rating', value: '4.8', icon: MessageSquare, color: 'bg-primary/80' },
-    { label: 'Pendapatan', value: 'Rp 12M', icon: TrendingUp, color: 'bg-accent/80' },
+    { label: "Kelas Aktif", value: "12", icon: BookOpen, color: "bg-primary" },
+    { label: "Total Peserta", value: "248", icon: Users, color: "bg-accent" },
+    {
+      label: "Rating",
+      value: "4.8",
+      icon: MessageSquare,
+      color: "bg-primary/80",
+    },
+    {
+      label: "Pendapatan",
+      value: "Rp 8 juta",
+      icon: TrendingUp,
+      color: "bg-accent/80",
+    },
   ];
 
   const menuItems = [
-    { 
-      id: 'manage', 
-      title: 'Kelola Kelas', 
-      icon: BookOpen, 
-      description: 'Buat dan atur kelas Anda',
+    {
+      id: "manage",
+      title: "Kelola Kelas",
+      icon: BookOpen,
+      description: "Buat dan atur kelas Anda",
       onClick: onNavigateToManageClasses,
-      color: 'bg-primary'
+      color: "bg-primary",
     },
-    { 
-      id: 'students', 
-      title: 'Peserta Terdaftar', 
-      icon: Users, 
-      description: 'Lihat semua peserta kelas',
+    {
+      id: "students",
+      title: "Peserta Terdaftar",
+      icon: Users,
+      description: "Lihat semua peserta kelas",
       onClick: onNavigateToStudents,
-      color: 'bg-accent'
+      color: "bg-accent",
     },
-    { 
-      id: 'feedback', 
-      title: 'Feedback & Rating', 
-      icon: MessageSquare, 
-      description: 'Tanggapan dari peserta',
+    {
+      id: "feedback",
+      title: "Feedback & Rating",
+      icon: MessageSquare,
+      description: "Tanggapan dari peserta",
       onClick: onNavigateToFeedback,
-      color: 'bg-primary/80'
+      color: "bg-primary/80",
     },
-    { 
-      id: 'reports', 
-      title: 'Laporan & Pendapatan', 
-      icon: TrendingUp, 
-      description: 'Statistik dan analisis',
+    {
+      id: "reports",
+      title: "Laporan & Pendapatan",
+      icon: TrendingUp,
+      description: "Statistik dan analisis",
       onClick: onNavigateToReports,
-      color: 'bg-accent/80'
+      color: "bg-accent/80",
     },
   ];
 
@@ -67,13 +84,15 @@ export function CoachDashboard({
       <div className="bg-primary text-primary-foreground p-6 rounded-b-3xl shadow-lg">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <p className="text-primary-foreground/80 text-sm">Selamat Datang,</p>
+            <p className="text-primary-foreground/80 text-sm">
+              Selamat Datang,
+            </p>
             <h2 className="text-primary-foreground">{userName}</h2>
             <Badge className="mt-2 bg-accent text-accent-foreground rounded-xl">
               Coach of The Month
             </Badge>
           </div>
-          <button 
+          <button
             onClick={onNavigateToNotifications}
             className="p-3 bg-primary-foreground/10 rounded-2xl hover:bg-primary-foreground/20 active:scale-95 transition-all relative"
           >
@@ -89,10 +108,15 @@ export function CoachDashboard({
           {stats.map((stat) => {
             const Icon = stat.icon;
             return (
-              <div key={stat.label} className="bg-primary-foreground/10 rounded-2xl p-4 backdrop-blur-sm">
+              <div
+                key={stat.label}
+                className="bg-primary-foreground/10 rounded-2xl p-4 backdrop-blur-sm"
+              >
                 <div className="flex items-center gap-2 mb-2">
                   <Icon className="w-4 h-4 text-primary-foreground/80" />
-                  <p className="text-xs text-primary-foreground/80">{stat.label}</p>
+                  <p className="text-xs text-primary-foreground/80">
+                    {stat.label}
+                  </p>
                 </div>
                 <p className="text-primary-foreground">{stat.value}</p>
               </div>
@@ -103,7 +127,7 @@ export function CoachDashboard({
 
       {/* Quick Action */}
       <div className="p-6">
-        <Button 
+        <Button
           onClick={onNavigateToManageClasses}
           className="w-full bg-accent hover:bg-accent/90 text-accent-foreground rounded-2xl h-14 shadow-md active:scale-95 transition-transform flex items-center justify-center gap-2"
         >
@@ -128,7 +152,9 @@ export function CoachDashboard({
               </div>
               <div className="flex-1 text-left">
                 <h4 className="text-foreground">{item.title}</h4>
-                <p className="text-sm text-muted-foreground">{item.description}</p>
+                <p className="text-sm text-muted-foreground">
+                  {item.description}
+                </p>
               </div>
             </button>
           );

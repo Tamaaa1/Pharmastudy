@@ -16,6 +16,7 @@ import { EditProfilePage } from "./components/EditProfilePage";
 import { ChangePasswordPage } from "./components/ChangePasswordPage";
 import { NotificationsPage } from "./components/NotificationsPage";
 import { CreateThreadPage } from "./components/CreateThreadPage";
+import { PackagesPage } from "./components/PackagesPage";
 import { BottomNav } from "./components/BottomNav";
 import { Toaster } from "./components/ui/sonner";
 import { toast } from "sonner@2.0.3";
@@ -25,10 +26,10 @@ import { CheckoutPage } from "./components/CheckoutPage";
 import { CoursePlayerPage } from "./components/CoursePlayerPage";
 import { BadgeListPage } from "./components/BadgeListPage";
 
-type Page = 
-  | 'login' 
-  | 'register' 
-  | 'coach-dashboard' 
+type Page =
+  | 'login'
+  | 'register'
+  | 'coach-dashboard'
   | 'student-dashboard'
   | 'manage-classes'
   | 'class-list'
@@ -52,7 +53,8 @@ type Page =
 interface User {
   name: string;
   email: string;
-  role: 'coach' | 'peserta';
+  role: 'coach' | 'peserta' | 'premium-user';
+  package?: 'free' | 'premium';
 }
 
 export default function App() {
@@ -68,9 +70,10 @@ export default function App() {
 
   const handleLogin = (email: string, password: string, role: 'coach' | 'peserta') => {
     const mockUser: User = {
-      name: role === 'coach' ? 'Dr. Sarah Johnson' : 'Ahmad Rizki',
+      name: role === 'coach' ? 'Dr. Sarah Johnson' : role === 'premium-user' ? 'Premium User' : 'Ahmad Rizki',
       email: email,
       role: role,
+      package: role === 'peserta' ? 'free' : role === 'premium-user' ? 'premium' : undefined, // Only students have packages, coaches have full access
     };
     setUser(mockUser);
     setCurrentPage(role === 'coach' ? 'coach-dashboard' : 'student-dashboard');
@@ -286,6 +289,13 @@ export default function App() {
       
       case 'badge-list':
         return <BadgeListPage onBack={handleBackToDashboard} />;
+
+      case 'packages':
+        return (
+          <PackagesPage
+            onBack={() => setCurrentPage('student-dashboard')}
+          />
+        );
 
       default:
         return null;

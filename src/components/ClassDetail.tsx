@@ -8,7 +8,7 @@ import { ImageWithFallback } from "./figma/ImageWithFallback";
 
 interface ClassDetailProps {
   classId: number;
-  userRole: 'coach' | 'peserta';
+  userRole: "coach" | "peserta";
   onBack: () => void;
   onGoToCheckout: (classId: number) => void;
   onPlayLesson: (lessonId: number) => void;
@@ -18,41 +18,131 @@ interface ClassDetailProps {
 export function ClassDetail({ classId, userRole, onBack, onGoToCheckout, onPlayLesson, isEnrolled }: ClassDetailProps) {
   const classData = {
     id: classId,
-    title: 'Teknik Presentasi Efektif',
-    coach: 'Dr. Sarah Johnson',
-    topic: 'Public Speaking',
-    schedule: '15 November 2024, 14:00 WIB',
-    method: 'Online',
-    quota: 30,
-    enrolled: 24,
-    description: 'Dalam kelas ini, Anda akan mempelajari teknik-teknik presentasi yang efektif dan menarik. Mulai dari cara membuka presentasi, mengatur struktur konten, hingga menutup dengan impact yang kuat. Kelas ini dirancang untuk meningkatkan kepercayaan diri dan kemampuan komunikasi Anda di depan audience.',
-    image: 'https://images.unsplash.com/photo-1588912914074-b93851ff14b8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxvbmxpbmUlMjBlZHVjYXRpb24lMjB0ZWFjaGVyfGVufDF8fHx8MTc2MTc0OTM3Nnww&ixlib=rb-4.1.0&q=80&w=1080',
-    rating: 4.9,
+    title: "Farmakologi Dasar: Mekanisme Aksi Obat",
+    coach: "Prof. Dr. apt. Budi Santoso",
+    topic: "Farmakologi",
+    schedule: "28 Oktober 2025, 10:00 WIB",
+    method: "Online",
+    quota: 50,
+    enrolled: 35,
+    description:
+      "Dalam kelas ini, Anda akan menyelami dunia farmakologi dasar, memahami prinsip-prinsip mekanisme aksi obat, farmakokinetik, dan farmakodinamik. Materi mencakup interaksi obat-reseptor, jalur metabolisme, serta efek terapeutik dan toksik obat. Kelas ini dirancang untuk memberikan fondasi kuat bagi mahasiswa farmasi.",
+    image:
+      "https://images.unsplash.com/photo-1628343719114-1e14909a349b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkcnVnfHNlYXJjaHwxfHwwfHx8MTcyMDczOTczM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+    rating: 4.8,
   };
 
-  const materials = [
-    { id: 1, title: 'Pengantar Presentasi Efektif', duration: '5 menit', completed: true },
-    { id: 2, title: 'Struktur Presentasi yang Baik', duration: '8 menit', completed: true },
-    { id: 3, title: 'Body Language & Vocal Variety', duration: '7 menit', completed: false },
-    { id: 4, title: 'Handling Q&A Session', duration: '5 menit', completed: false },
+  const allMaterials = [
+    {
+      id: 1,
+      title: "Pengantar Farmakologi",
+      duration: "10 menit",
+      type: "materi",
+      completed: true,
+    },
+    {
+      id: 2,
+      title: "Konsep Farmakokinetik",
+      duration: "15 menit",
+      type: "materi",
+      completed: true,
+    },
+    {
+      id: 3,
+      title: "Konsep Farmakodinamik",
+      duration: "12 menit",
+      type: "materi",
+      completed: false,
+    },
+    {
+      id: 4,
+      title: "Interaksi Obat-Reseptor",
+      duration: "8 menit",
+      type: "materi",
+      completed: false,
+    },
+    {
+      id: 5,
+      title: "Video Materi: Jalur Absorpsi Obat",
+      duration: "20 menit",
+      type: "video-materi",
+      completed: false,
+    },
+    {
+      id: 6,
+      title: "Video Materi: Metabolisme dan Ekskresi",
+      duration: "18 menit",
+      type: "video-materi",
+      completed: false,
+    },
+    {
+      id: 7,
+      title: "Video Materi: Agonis dan Antagonis",
+      duration: "15 menit",
+      type: "video-materi",
+      completed: false,
+    },
+    {
+      id: 8,
+      title: "Video Materi: Efek Samping Obat",
+      duration: "10 menit",
+      type: "video-materi",
+      completed: false,
+    },
+    {
+      id: 9,
+      title: "Video Kelas Live: Studi Kasus Farmakologi",
+      duration: "60 menit",
+      type: "video-kelas",
+      completed: false,
+    },
+    {
+      id: 10,
+      title: "Video Kelas Live: Diskusi Obat-Obatan Umum",
+      duration: "40 menit",
+      type: "video-kelas",
+      completed: false,
+    },
   ];
+
+  // Filter materials based on user package
+  const materials =
+    userPackage === "free"
+      ? allMaterials
+          .filter((m) => m.type === "materi")
+          .slice(0, 2)
+          .concat(
+            allMaterials.filter((m) => m.type === "video-materi").slice(0, 2),
+          )
+      : allMaterials;
 
   const feedback = [
     {
       id: 1,
-      name: 'Ahmad Rizki',
-      avatar: '',
+      name: "Rina Apoteker",
+      avatar: "",
       rating: 5,
-      comment: 'Kelas yang sangat bermanfaat! Coach Sarah menjelaskan dengan sangat detail dan mudah dipahami.',
-      date: '2 hari lalu',
+      comment:
+        "Penjelasan Prof. Budi sangat mendalam. Membantu saya memahami konsep farmakologi yang kompleks!",
+      date: "3 hari lalu",
     },
     {
       id: 2,
-      name: 'Siti Nurhaliza',
-      avatar: '',
+      name: "Bima Farmasis",
+      avatar: "",
       rating: 5,
-      comment: 'Materinya bagus dan praktis. Langsung bisa diterapkan di pekerjaan.',
-      date: '5 hari lalu',
+      comment:
+        "Materi sangat relevan dengan kurikulum perkuliahan. Contoh kasusnya juga aplikatif.",
+      date: "1 minggu lalu",
+    },
+    {
+      id: 3,
+      name: "Dewi Mahasiswa",
+      avatar: "",
+      rating: 4,
+      comment:
+        "Awalnya sulit, tapi setelah mengikuti kelas ini jadi lebih mudah memahami mekanisme kerja obat.",
+      date: "1 hari lalu",
     },
   ];
 
@@ -60,7 +150,7 @@ export function ClassDetail({ classId, userRole, onBack, onGoToCheckout, onPlayL
     <div className="min-h-screen bg-background pb-24">
       {/* Header Image */}
       <div className="relative">
-        <ImageWithFallback 
+        <ImageWithFallback
           src={classData.image}
           alt={classData.title}
           className="w-full h-64 object-cover"
@@ -85,7 +175,9 @@ export function ClassDetail({ classId, userRole, onBack, onGoToCheckout, onPlayL
               <span className="text-foreground">{classData.rating}</span>
             </div>
             <span className="text-muted-foreground">•</span>
-            <span className="text-muted-foreground">{classData.enrolled} peserta</span>
+            <span className="text-muted-foreground">
+              {classData.enrolled} peserta
+            </span>
           </div>
 
           <div className="space-y-3 mb-6">
@@ -99,11 +191,13 @@ export function ClassDetail({ classId, userRole, onBack, onGoToCheckout, onPlayL
             </div>
             <div className="flex items-center gap-3 text-muted-foreground">
               <Users className="w-5 h-5" />
-              <span>{classData.enrolled} / {classData.quota} peserta terdaftar</span>
+              <span>
+                {classData.enrolled} / {classData.quota} peserta terdaftar
+              </span>
             </div>
           </div>
 
-          {userRole === 'coach' ? (
+          {userRole === "coach" ? (
             <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl h-12 shadow-md">
               <Play className="w-5 h-5 mr-2" />
               Mulai Kelas
@@ -131,45 +225,47 @@ export function ClassDetail({ classId, userRole, onBack, onGoToCheckout, onPlayL
       <div className="px-6">
         <Tabs defaultValue="materi" className="w-full">
           <TabsList className="grid w-full grid-cols-4 bg-card rounded-2xl p-1 mb-6">
-            <TabsTrigger value="materi" className="rounded-xl text-xs">Materi</TabsTrigger>
-            <TabsTrigger value="diskusi" className="rounded-xl text-xs">Diskusi</TabsTrigger>
-            <TabsTrigger value="tugas" className="rounded-xl text-xs">Tugas</TabsTrigger>
-            <TabsTrigger value="feedback" className="rounded-xl text-xs">Feedback</TabsTrigger>
+            <TabsTrigger value="materi" className="rounded-xl text-xs">
+              Materi
+            </TabsTrigger>
+            <TabsTrigger value="diskusi" className="rounded-xl text-xs">
+              Diskusi
+            </TabsTrigger>
+            <TabsTrigger value="tugas" className="rounded-xl text-xs">
+              Tugas
+            </TabsTrigger>
+            <TabsTrigger value="feedback" className="rounded-xl text-xs">
+              Feedback
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="materi" className="space-y-3">
             <h3 className="text-foreground mb-4">Materi Pembelajaran</h3>
             {materials.map((material) => (
               <button
+              <div
                 key={material.id}
                 onClick={() => onPlayLesson(material.id)}
                 disabled={!isEnrolled}
                 className="w-full bg-card rounded-2xl p-4 shadow-md hover:shadow-lg transition-all cursor-pointer active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                {/* --- AWAL PERBAIKAN VISUAL --- */}
-                <div className="flex items-center justify-between gap-4 w-full">
-                  {/* Bagian Kiri: Ikon & Judul */}
-                  <div className="flex items-center gap-4 flex-1 min-w-0">
-                    <div className={`w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0 ${
-                      material.completed && isEnrolled ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
-                    }`}>
-                      <Play className="w-5 h-5" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h4 className="text-foreground text-sm mb-1 truncate">{material.title}</h4>
-                      <p className="text-xs text-muted-foreground">{material.duration}</p>
-                    </div>
+                <div className="flex items-center gap-4">
+                  <div
+                    className={`w-10 h-10 rounded-2xl flex items-center justify-center ${
+                      material.completed
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted text-muted-foreground"
+                    }`}
+                  >
+                    <Play className="w-5 h-5" />
                   </div>
-
-                  {/* Bagian Kanan: Status (Akan Rata Kanan) */}
-                  <div className="flex-shrink-0">
-                    {isEnrolled ? (
-                      material.completed && (
-                        <div className="text-primary text-xs font-medium">✓ Selesai</div>
-                      )
-                    ) : (
-                      <Lock className="w-4 h-4 text-muted-foreground" />
-                    )}
+                  <div className="flex-1">
+                    <h4 className="text-foreground text-sm mb-1">
+                      {material.title}
+                    </h4>
+                    <p className="text-xs text-muted-foreground">
+                      {material.duration}
+                    </p>
                   </div>
                 </div>
                 {/* --- AKHIR PERBAIKAN VISUAL --- */}
@@ -188,7 +284,9 @@ export function ClassDetail({ classId, userRole, onBack, onGoToCheckout, onPlayL
 
           <TabsContent value="tugas" className="space-y-3">
             <div className="bg-card rounded-2xl p-6 shadow-md text-center">
-              <p className="text-muted-foreground mb-4">Belum ada tugas tersedia</p>
+              <p className="text-muted-foreground mb-4">
+                Belum ada tugas tersedia
+              </p>
             </div>
           </TabsContent>
 
@@ -205,7 +303,7 @@ export function ClassDetail({ classId, userRole, onBack, onGoToCheckout, onPlayL
                   </button>
                 ))}
               </div>
-              <Textarea 
+              <Textarea
                 placeholder="Tuliskan pengalaman Anda tentang kelas ini..."
                 className="rounded-2xl mb-4 min-h-24"
               />
@@ -228,16 +326,25 @@ export function ClassDetail({ classId, userRole, onBack, onGoToCheckout, onPlayL
                     <div className="flex items-center gap-2 mt-1">
                       <div className="flex gap-1">
                         {[...Array(item.rating)].map((_, i) => (
-                          <Star key={i} className="w-3 h-3 fill-accent text-accent" />
+                          <Star
+                            key={i}
+                            className="w-3 h-3 fill-accent text-accent"
+                          />
                         ))}
                       </div>
-                      <span className="text-xs text-muted-foreground">{item.date}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {item.date}
+                      </span>
                     </div>
                   </div>
                 </div>
                 <p className="text-sm text-muted-foreground">{item.comment}</p>
-                {userRole === 'coach' && (
-                  <Button variant="outline" size="sm" className="mt-3 rounded-xl">
+                {userRole === "coach" && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="mt-3 rounded-xl"
+                  >
                     Balas
                   </Button>
                 )}
@@ -251,7 +358,9 @@ export function ClassDetail({ classId, userRole, onBack, onGoToCheckout, onPlayL
       <div className="px-6 mt-6">
         <div className="bg-card rounded-2xl p-6 shadow-md">
           <h3 className="text-foreground mb-3">Tentang Kelas</h3>
-          <p className="text-muted-foreground leading-relaxed">{classData.description}</p>
+          <p className="text-muted-foreground leading-relaxed">
+            {classData.description}
+          </p>
         </div>
       </div>
     </div>

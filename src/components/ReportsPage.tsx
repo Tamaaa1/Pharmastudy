@@ -1,7 +1,26 @@
-import { ArrowLeft, Download, TrendingUp, Users, Star, DollarSign } from "lucide-react";
+import {
+  ArrowLeft,
+  Download,
+  TrendingUp,
+  Users,
+  Star,
+  DollarSign,
+} from "lucide-react";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import {
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 interface ReportsPageProps {
   onBack: () => void;
@@ -9,25 +28,45 @@ interface ReportsPageProps {
 
 export function ReportsPage({ onBack }: ReportsPageProps) {
   const stats = [
-    { label: 'Kelas Aktif', value: 12, icon: TrendingUp, change: '+3 bulan ini' },
-    { label: 'Total Peserta', value: 248, icon: Users, change: '+45 bulan ini' },
-    { label: 'Rating Rata-rata', value: 4.8, icon: Star, change: '+0.2 bulan ini' },
-    { label: 'Pendapatan', value: 'Rp 12M', icon: DollarSign, change: '+Rp 3M bulan ini' },
+    {
+      label: "Kelas Aktif",
+      value: 12,
+      icon: TrendingUp,
+      change: "+3 bulan ini",
+    },
+    {
+      label: "Total Peserta",
+      value: 248,
+      icon: Users,
+      change: "+45 bulan ini",
+    },
+    {
+      label: "Rating Rata-rata",
+      value: 4.8,
+      icon: Star,
+      change: "+0.2 bulan ini",
+    },
+    {
+      label: "Pendapatan",
+      value: "Rp 11.5 Juta",
+      icon: DollarSign,
+      change: "+Rp 3M bulan ini",
+    },
   ];
 
   const monthlyData = [
-    { month: 'Jul', peserta: 35, pendapatan: 8.5 },
-    { month: 'Agu', peserta: 42, pendapatan: 10.2 },
-    { month: 'Sep', peserta: 38, pendapatan: 9.1 },
-    { month: 'Okt', peserta: 51, pendapatan: 12.3 },
-    { month: 'Nov', peserta: 45, pendapatan: 10.8 },
+    { month: "Jul", peserta: 35, pendapatan: 8.5 },
+    { month: "Agu", peserta: 42, pendapatan: 10.2 },
+    { month: "Sep", peserta: 38, pendapatan: 9.1 },
+    { month: "Okt", peserta: 51, pendapatan: 12.3 },
+    { month: "Nov", peserta: 45, pendapatan: 10.8 },
   ];
 
   const categoryData = [
-    { name: 'Public Speaking', value: 35, color: '#8B1E24' },
-    { name: 'Leadership', value: 28, color: '#D6B370' },
-    { name: 'Productivity', value: 22, color: '#A0826D' },
-    { name: 'Innovation', value: 15, color: '#F5EDE0' },
+    { name: "Public Speaking", value: 35, color: "#8B1E24" },
+    { name: "Leadership", value: 28, color: "#D6B370" },
+    { name: "Productivity", value: 22, color: "#A0826D" },
+    { name: "Innovation", value: 15, color: "#F5EDE0" },
   ];
 
   return (
@@ -42,7 +81,9 @@ export function ReportsPage({ onBack }: ReportsPageProps) {
           <span>Kembali</span>
         </button>
         <h2 className="text-primary-foreground mb-2">Laporan & Pendapatan</h2>
-        <p className="text-primary-foreground/80 text-sm">Statistik dan analisis performa Anda</p>
+        <p className="text-primary-foreground/80 text-sm">
+          Statistik dan analisis performa Anda
+        </p>
       </div>
 
       {/* Stats Cards */}
@@ -51,14 +92,19 @@ export function ReportsPage({ onBack }: ReportsPageProps) {
           {stats.map((stat) => {
             const Icon = stat.icon;
             return (
-              <div key={stat.label} className="bg-card rounded-2xl p-4 shadow-md">
+              <div
+                key={stat.label}
+                className="bg-card rounded-2xl p-4 shadow-md"
+              >
                 <div className="flex items-center gap-2 mb-2">
                   <div className="p-2 bg-primary/10 rounded-xl">
                     <Icon className="w-4 h-4 text-primary" />
                   </div>
                 </div>
                 <p className="text-foreground mb-1">{stat.value}</p>
-                <p className="text-xs text-muted-foreground mb-1">{stat.label}</p>
+                <p className="text-xs text-muted-foreground mb-1">
+                  {stat.label}
+                </p>
                 <p className="text-xs text-primary">{stat.change}</p>
               </div>
             );
@@ -86,16 +132,26 @@ export function ReportsPage({ onBack }: ReportsPageProps) {
                 <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                 <XAxis dataKey="month" stroke="#8B7F7C" />
                 <YAxis stroke="#8B7F7C" />
-                <Tooltip 
-                  contentStyle={{ 
-                    backgroundColor: '#ffffff', 
-                    border: '1px solid #e0e0e0',
-                    borderRadius: '12px'
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "#ffffff",
+                    border: "1px solid #e0e0e0",
+                    borderRadius: "12px",
                   }}
                 />
                 <Legend />
-                <Bar dataKey="peserta" fill="#8B1E24" name="Peserta Baru" radius={[8, 8, 0, 0]} />
-                <Bar dataKey="pendapatan" fill="#D6B370" name="Pendapatan (Juta)" radius={[8, 8, 0, 0]} />
+                <Bar
+                  dataKey="peserta"
+                  fill="#8B1E24"
+                  name="Peserta Baru"
+                  radius={[8, 8, 0, 0]}
+                />
+                <Bar
+                  dataKey="pendapatan"
+                  fill="#D6B370"
+                  name="Pendapatan (Juta)"
+                  radius={[8, 8, 0, 0]}
+                />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
@@ -106,7 +162,9 @@ export function ReportsPage({ onBack }: ReportsPageProps) {
       <div className="px-6 mb-6">
         <Card className="rounded-2xl shadow-md border-0">
           <CardHeader>
-            <CardTitle className="text-foreground">Distribusi Kategori Kelas</CardTitle>
+            <CardTitle className="text-foreground">
+              Distribusi Kategori Kelas
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
@@ -116,7 +174,9 @@ export function ReportsPage({ onBack }: ReportsPageProps) {
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                  label={({ name, percent }) =>
+                    `${name} ${(percent * 100).toFixed(0)}%`
+                  }
                   outerRadius={80}
                   fill="#8884d8"
                   dataKey="value"
@@ -137,9 +197,9 @@ export function ReportsPage({ onBack }: ReportsPageProps) {
         <h3 className="text-foreground mb-4">Kelas Terpopuler</h3>
         <div className="space-y-3">
           {[
-            { name: 'Teknik Presentasi Efektif', rating: 4.9, students: 78 },
-            { name: 'Leadership & Team Management', rating: 4.8, students: 65 },
-            { name: 'Time Management Essentials', rating: 4.7, students: 52 },
+            { name: "Teknik Presentasi Efektif", rating: 4.9, students: 78 },
+            { name: "Leadership & Team Management", rating: 4.8, students: 65 },
+            { name: "Time Management Essentials", rating: 4.7, students: 52 },
           ].map((classItem, index) => (
             <div key={index} className="bg-card rounded-2xl p-4 shadow-md">
               <div className="flex items-center justify-between mb-2">

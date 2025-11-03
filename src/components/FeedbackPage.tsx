@@ -1,4 +1,10 @@
-import { ArrowLeft, Star, MessageSquare, TrendingUp, Filter } from "lucide-react";
+import {
+  ArrowLeft,
+  Star,
+  MessageSquare,
+  TrendingUp,
+  Filter,
+} from "lucide-react";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
@@ -10,44 +16,57 @@ interface FeedbackPageProps {
 
 export function FeedbackPage({ onBack }: FeedbackPageProps) {
   const feedbackStats = [
-    { rating: 5, count: 142, percentage: 72 },
-    { rating: 4, count: 38, percentage: 19 },
-    { rating: 3, count: 12, percentage: 6 },
-    { rating: 2, count: 4, percentage: 2 },
+    { rating: 5, count: 180, percentage: 75 },
+    { rating: 4, count: 48, percentage: 20 },
+    { rating: 3, count: 8, percentage: 3 },
+    { rating: 2, count: 2, percentage: 1 },
     { rating: 1, count: 2, percentage: 1 },
   ];
 
   const feedback = [
     {
       id: 1,
-      studentName: 'Ahmad Rizki',
-      className: 'Teknik Presentasi Efektif',
+      studentName: "Budi Farmasi",
+      className: "Farmakologi Dasar: Mekanisme Aksi Obat",
       rating: 5,
-      comment: 'Kelas yang sangat bermanfaat! Coach Sarah menjelaskan dengan sangat detail dan mudah dipahami. Saya langsung bisa praktikkan di kantor.',
-      date: '2 hari lalu',
+      comment:
+        "Penjelasan Prof. Budi sangat jelas dan mudah dipahami. Konsep farmakologi jadi tidak membingungkan lagi!",
+      date: "3 hari lalu",
       replied: true,
     },
     {
       id: 2,
-      studentName: 'Siti Nurhaliza',
-      className: 'Leadership & Team Management',
+      studentName: "Siti Apoteker",
+      className: "Farmasetika: Formulasi Sediaan Solid",
       rating: 5,
-      comment: 'Materinya bagus dan praktis. Langsung bisa diterapkan di pekerjaan. Terima kasih coach!',
-      date: '5 hari lalu',
+      comment:
+        "Materi formulasi sediaan tablet sangat aplikatif. Langsung bisa diterapkan saat praktikum. Terima kasih Dr. Siti!",
+      date: "1 minggu lalu",
       replied: false,
     },
     {
       id: 3,
-      studentName: 'Budi Santoso',
-      className: 'Teknik Presentasi Efektif',
+      studentName: "Rina Mahasiswa",
+      className: "Kimia Medisinal: Pengenalan Desain Obat",
       rating: 4,
-      comment: 'Overall bagus, cuma mungkin bisa ditambah lebih banyak contoh kasus nyata.',
-      date: '1 minggu lalu',
+      comment:
+        "Kelasnya informatif, hanya saja beberapa bagian perlu contoh yang lebih beragam dari obat-obatan baru.",
+      date: "5 hari lalu",
       replied: true,
+    },
+    {
+      id: 4,
+      studentName: "Ahmad Peneliti",
+      className: "Farmakognosi: Identifikasi Tumbuhan Obat",
+      rating: 5,
+      comment:
+        "Sangat terbantu dalam memahami metode identifikasi. Video demonya sangat membantu!",
+      date: "2 minggu lalu",
+      replied: false,
     },
   ];
 
-  const averageRating = 4.8;
+  const averageRating = 4.8; // Updated based on new stats
 
   return (
     <div className="min-h-screen bg-background pb-24">
@@ -60,8 +79,12 @@ export function FeedbackPage({ onBack }: FeedbackPageProps) {
           <ArrowLeft className="w-5 h-5" />
           <span>Kembali</span>
         </button>
-        <h2 className="text-primary-foreground mb-2">Feedback & Rating</h2>
-        <p className="text-primary-foreground/80 text-sm">Tanggapan dari peserta kelas Anda</p>
+        <h2 className="text-primary-foreground mb-2">
+          Feedback & Rating Kelas Farmasi
+        </h2>
+        <p className="text-primary-foreground/80 text-sm">
+          Tanggapan dari peserta kelas farmasi Anda
+        </p>
       </div>
 
       {/* Average Rating Card */}
@@ -71,27 +94,32 @@ export function FeedbackPage({ onBack }: FeedbackPageProps) {
             <Star className="w-10 h-10 text-accent fill-accent" />
           </div>
           <h1 className="text-foreground mb-2">{averageRating}</h1>
-          <p className="text-muted-foreground mb-4">Rating Rata-rata</p>
+          <p className="text-muted-foreground mb-4">
+            Rating Rata-rata Kelas Farmasi
+          </p>
           <div className="flex items-center justify-center gap-1 mb-2">
             {[1, 2, 3, 4, 5].map((star) => (
-              <Star 
-                key={star} 
+              <Star
+                key={star}
                 className={`w-6 h-6 ${
-                  star <= Math.floor(averageRating) 
-                    ? 'fill-accent text-accent' 
-                    : 'text-muted'
+                  star <= Math.floor(averageRating)
+                    ? "fill-accent text-accent"
+                    : "text-muted"
                 }`}
               />
             ))}
           </div>
-          <p className="text-sm text-muted-foreground">Dari 198 ulasan</p>
+          <p className="text-sm text-muted-foreground">Dari 240 ulasan</p>{" "}
+          {/* Updated total reviews */}
         </div>
       </div>
 
       {/* Rating Distribution */}
       <div className="px-6 mb-6">
         <div className="bg-card rounded-2xl p-6 shadow-md">
-          <h3 className="text-foreground mb-4">Distribusi Rating</h3>
+          <h3 className="text-foreground mb-4">
+            Distribusi Rating Kelas Farmasi
+          </h3>
           <div className="space-y-3">
             {feedbackStats.map((stat) => (
               <div key={stat.rating} className="flex items-center gap-3">
@@ -100,7 +128,7 @@ export function FeedbackPage({ onBack }: FeedbackPageProps) {
                   <Star className="w-4 h-4 text-accent fill-accent" />
                 </div>
                 <div className="flex-1 bg-muted rounded-full h-2 overflow-hidden">
-                  <div 
+                  <div
                     className="bg-accent h-full rounded-full transition-all"
                     style={{ width: `${stat.percentage}%` }}
                   />
@@ -117,7 +145,7 @@ export function FeedbackPage({ onBack }: FeedbackPageProps) {
       {/* Filter */}
       <div className="px-6 mb-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-foreground">Semua Feedback</h3>
+          <h3 className="text-foreground">Semua Feedback Kelas Farmasi</h3>
           <button className="flex items-center gap-1 text-sm text-primary active:scale-95 transition-transform">
             <Filter className="w-4 h-4" />
             Filter
@@ -144,14 +172,22 @@ export function FeedbackPage({ onBack }: FeedbackPageProps) {
                     </Badge>
                   )}
                 </div>
-                <p className="text-xs text-muted-foreground mb-2">{item.className}</p>
+                <p className="text-xs text-muted-foreground mb-2">
+                  Kelas: {item.className}
+                </p>{" "}
+                {/* Added "Kelas:" prefix */}
                 <div className="flex items-center gap-2">
                   <div className="flex gap-1">
                     {[...Array(item.rating)].map((_, i) => (
-                      <Star key={i} className="w-3 h-3 fill-accent text-accent" />
+                      <Star
+                        key={i}
+                        className="w-3 h-3 fill-accent text-accent"
+                      />
                     ))}
                   </div>
-                  <span className="text-xs text-muted-foreground">• {item.date}</span>
+                  <span className="text-xs text-muted-foreground">
+                    • {item.date}
+                  </span>
                 </div>
               </div>
             </div>
@@ -162,16 +198,16 @@ export function FeedbackPage({ onBack }: FeedbackPageProps) {
 
             {!item.replied && (
               <div className="space-y-2">
-                <Textarea 
-                  placeholder="Tulis balasan Anda..."
+                <Textarea
+                  placeholder="Tulis balasan Anda untuk feedback ini..." // Updated placeholder
                   className="rounded-2xl text-sm min-h-20"
                 />
-                <Button 
+                <Button
                   size="sm"
                   className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl"
                 >
                   <MessageSquare className="w-4 h-4 mr-1" />
-                  Balas
+                  Balas Feedback
                 </Button>
               </div>
             )}
@@ -180,7 +216,8 @@ export function FeedbackPage({ onBack }: FeedbackPageProps) {
               <div className="bg-secondary/50 rounded-2xl p-3 mt-3 border-l-4 border-primary">
                 <p className="text-xs text-primary mb-1">Balasan Anda:</p>
                 <p className="text-sm text-foreground">
-                  Terima kasih atas feedbacknya! Senang mendengar kelas ini bermanfaat untuk Anda.
+                  Terima kasih atas feedback Anda yang berharga! Kami senang
+                  kelas ini bermanfaat.
                 </p>
               </div>
             )}
