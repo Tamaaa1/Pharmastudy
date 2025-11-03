@@ -1,0 +1,21 @@
+# TODO: Tambahkan Fitur Paket Belajar
+
+- [x] Tambahkan array paket belajar dengan detail harga dan fitur
+- [x] Tambahkan section "Paket Belajar" di StudentDashboard.tsx setelah Quick Actions
+- [x] Render paket dalam grid cards dengan tombol "Pilih Paket"
+- [x] Pindahkan "Pilih Paket" ke Quick Actions sebagai tombol baru
+- [x] Hapus section Paket Belajar terpisah
+- [x] Buat halaman Paket Pembelajaran dengan detail paket
+- [x] Implementasi logika paket di ClassDetail.tsx untuk membatasi akses materi berdasarkan paket user
+- [x] Update User interface di App.tsx untuk menyertakan package
+- [x] Update handleLogin dan handleRegister untuk assign paket default (free untuk peserta, coach tidak ada paket)
+- [x] Update PackagesPage.tsx untuk menampilkan "Paket Aktif" pada paket Premium
+- [x] Tambahkan filter "Video Kelas Live" di ClassList.tsx
+- [x] Implementasi logika pembatasan akses berdasarkan paket di ClassList.tsx (free users limited to 2 classes per category, no access to live video classes)
+- [x] Update ClassList props untuk menerima userPackage
+- [x] Update App.tsx untuk pass userPackage ke ClassList component
+- [x] Tambahkan visual indicator untuk tab yang tidak dapat diakses free users (opacity dan cursor-not-allowed)
+- [x] Prevent free users from selecting "Video Kelas Live" tab
+- [x] Tambahkan role "premium-user" ke sistem login dan register
+- [x] Update User interface untuk menyertakan role "premium-user"
+- [x] Premium users mendapatkan akses penuh ke semua kelas dan fitur
