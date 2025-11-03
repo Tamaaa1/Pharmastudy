@@ -1,4 +1,4 @@
-import { ArrowLeft, Calendar, MapPin, Users, Star, Play } from "lucide-react";
+import { ArrowLeft, Calendar, MapPin, Users, Star, Play, Lock } from "lucide-react";
 import { Button } from "./ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -10,15 +10,12 @@ interface ClassDetailProps {
   classId: number;
   userRole: "coach" | "peserta";
   onBack: () => void;
-  userPackage?: "free" | "premium";
+  onGoToCheckout: (classId: number) => void;
+  onPlayLesson: (lessonId: number) => void;
+  isEnrolled: boolean;
 }
 
-export function ClassDetail({
-  classId,
-  userRole,
-  onBack,
-  userPackage = "free",
-}: ClassDetailProps) {
+export function ClassDetail({ classId, userRole, onBack, onGoToCheckout, onPlayLesson, isEnrolled }: ClassDetailProps) {
   const classData = {
     id: classId,
     title: "Farmakologi Dasar: Mekanisme Aksi Obat",
@@ -205,9 +202,20 @@ export function ClassDetail({
               <Play className="w-5 h-5 mr-2" />
               Mulai Kelas
             </Button>
+          ) : isEnrolled ? (
+            <Button 
+              onClick={() => onPlayLesson(materials[0].id)}
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl h-12 shadow-md"
+            >
+              <Play className="w-5 h-5 mr-2" />
+              Lanjutkan Belajar
+            </Button>
           ) : (
-            <Button className="w-full bg-accent hover:bg-accent/90 text-accent-foreground rounded-2xl h-12 shadow-md">
-              Daftar Kelas
+            <Button 
+              onClick={() => onGoToCheckout(classId)}
+              className="w-full bg-accent hover:bg-accent/90 text-accent-foreground rounded-2xl h-12 shadow-md"
+            >
+              Daftar Kelas (Rp 150.000)
             </Button>
           )}
         </div>
@@ -234,9 +242,12 @@ export function ClassDetail({
           <TabsContent value="materi" className="space-y-3">
             <h3 className="text-foreground mb-4">Materi Pembelajaran</h3>
             {materials.map((material) => (
+              <button
               <div
                 key={material.id}
-                className="bg-card rounded-2xl p-4 shadow-md hover:shadow-lg transition-all cursor-pointer active:scale-95"
+                onClick={() => onPlayLesson(material.id)}
+                disabled={!isEnrolled}
+                className="w-full bg-card rounded-2xl p-4 shadow-md hover:shadow-lg transition-all cursor-pointer active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 <div className="flex items-center gap-4">
                   <div
@@ -256,11 +267,9 @@ export function ClassDetail({
                       {material.duration}
                     </p>
                   </div>
-                  {material.completed && (
-                    <div className="text-primary text-xs">✓ Selesai</div>
-                  )}
                 </div>
-              </div>
+                {/* --- AKHIR PERBAIKAN VISUAL --- */}
+              </button>
             ))}
           </TabsContent>
 
@@ -283,16 +292,14 @@ export function ClassDetail({
 
           <TabsContent value="feedback" className="space-y-4">
             <div className="bg-card rounded-2xl p-6 shadow-md">
-              <h4 className="text-foreground mb-4">
-                Berikan Rating & Komentar
-              </h4>
-              <div className="flex gap-2 mb-4">
+              <h4 className="text-foreground mb-4">Berikan Rating & Komentar</h4>
+              <div className="flex justify-center gap-2 mb-4">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
                     key={star}
                     className="p-2 hover:scale-110 transition-transform active:scale-95"
                   >
-                    <Star className="w-6 h-6 text-accent" />
+                    <Star className="w-6 h-6 text-accent/30 hover:text-accent" />
                   </button>
                 ))}
               </div>

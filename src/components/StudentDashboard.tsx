@@ -17,16 +17,19 @@ interface StudentDashboardProps {
   onNavigateToClassList: () => void;
   onNavigateToCommunity: () => void;
   onNavigateToQuiz: () => void;
-  onNavigateToPackages: () => void;
+  onNavigateToMyClasses: () => void;
+  onNavigateToBadgeList: () => void;
 }
 
-export function StudentDashboard({
-  userName,
-  onNavigateToClassList,
-  onNavigateToCommunity,
+export function StudentDashboard({ 
+  userName, 
+  onNavigateToClassList, 
+  onNavigateToCommunity, 
   onNavigateToQuiz,
-  onNavigateToPackages,
+  onNavigateToMyClasses,
+  onNavigateToBadgeList
 }: StudentDashboardProps) {
+  
   const userStats = {
     points: 1500, // Adjusted points for pharmacy context
     level: 9, // Adjusted level
@@ -155,7 +158,7 @@ export function StudentDashboard({
             className="bg-accent hover:bg-accent/90 text-accent-foreground rounded-2xl h-24 flex flex-col items-center justify-center gap-2 shadow-md active:scale-95 transition-transform"
           >
             <Search className="w-6 h-6" />
-            <span>Jelajahi Kelas Farmasi</span>
+            <span>Jelajahi Kelas</span>
           </Button>
           <Button
             onClick={onNavigateToCommunity}
@@ -184,6 +187,8 @@ export function StudentDashboard({
       {/* Badges Section */}
       <div className="px-6 mb-6">
         <div className="flex items-center justify-between mb-4">
+          <h3 className="text-foreground">Badge Saya</h3>
+          <button onClick={onNavigateToBadgeList} className="text-primary text-sm">Lihat Semua</button>
           <h3 className="text-foreground">Badge Keilmuan Farmasi</h3>
           <button className="text-primary text-sm">Lihat Semua Badge</button>
         </div>
@@ -205,12 +210,12 @@ export function StudentDashboard({
       {/* Enrolled Classes */}
       <div className="px-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-foreground">Kelas Farmasi Saya</h3>
-          <button
-            className="text-primary text-sm"
-            onClick={onNavigateToClassList}
+          <h3 className="text-foreground">Kelas Saya</h3>
+          <button 
+            className="text-primary text-sm" 
+            onClick={onNavigateToMyClasses} // <-- SAMBUNGKAN FUNGSI DI SINI
           >
-            Lihat Semua Kelas
+            Lihat Semua
           </button>
         </div>
         <div className="space-y-3">
