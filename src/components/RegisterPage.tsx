@@ -6,9 +6,9 @@ import { Checkbox } from "./ui/checkbox";
 import { GraduationCap, ArrowLeft } from "lucide-react";
 
 interface RegisterPageProps {
-  onRegister: (name: string, email: string, password: string, role: 'coach' | 'peserta') => void;
+  onRegister: (name: string, email: string, password: string, role: 'coach' | 'peserta' | 'premium-user') => void;
   onNavigateToLogin: () => void;
-  defaultRole: 'coach' | 'peserta';
+  defaultRole: 'coach' | 'peserta' | 'premium-user';
 }
 
 export function RegisterPage({ onRegister, onNavigateToLogin, defaultRole }: RegisterPageProps) {
@@ -50,7 +50,7 @@ export function RegisterPage({ onRegister, onNavigateToLogin, defaultRole }: Reg
           </div>
           <h1 className="text-primary mb-2">Buat Akun Baru</h1>
           <p className="text-muted-foreground">
-            Daftar sebagai {defaultRole === 'coach' ? 'Coach' : 'Peserta'}
+            Daftar sebagai {defaultRole === 'coach' ? 'Coach' : defaultRole === 'premium-user' ? 'Premium User' : 'Peserta'}
           </p>
         </div>
 

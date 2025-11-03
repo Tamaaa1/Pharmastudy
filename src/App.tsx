@@ -16,6 +16,7 @@ import { EditProfilePage } from "./components/EditProfilePage";
 import { ChangePasswordPage } from "./components/ChangePasswordPage";
 import { NotificationsPage } from "./components/NotificationsPage";
 import { CreateThreadPage } from "./components/CreateThreadPage";
+import { PackagesPage } from "./components/PackagesPage";
 import { BottomNav } from "./components/BottomNav";
 import { Toaster } from "./components/ui/sonner";
 import { toast } from "sonner@2.0.3";
@@ -23,14 +24,15 @@ import { ThreadDetailPage } from "./components/ThreadDetailPage";
 import { MyClassesPage } from "./components/MyClassesPage";
 import { CheckoutPage } from "./components/CheckoutPage";
 import { CoursePlayerPage } from "./components/CoursePlayerPage";
+import { BadgeListPage } from "./components/BadgeListPage";
 
-type Page = 
-  | 'login' 
-  | 'register' 
-  | 'coach-dashboard' 
+type Page =
+  | 'login'
+  | 'register'
+  | 'coach-dashboard'
   | 'student-dashboard'
   | 'manage-classes'
-  | 'class-list' // Ini adalah halaman "Jelajahi"
+  | 'class-list'
   | 'class-detail'
   | 'reports'
   | 'community'
@@ -45,12 +47,14 @@ type Page =
   | 'thread-detail'
   | 'my-classes'
   | 'checkout'
-  | 'course-player';
+  | 'course-player'
+  | 'badge-list';
 
 interface User {
   name: string;
   email: string;
-  role: 'coach' | 'peserta';
+  role: 'coach' | 'peserta' | 'premium-user';
+  package?: 'free' | 'premium';
 }
 
 export default function App() {
@@ -66,9 +70,10 @@ export default function App() {
 
   const handleLogin = (email: string, password: string, role: 'coach' | 'peserta') => {
     const mockUser: User = {
-      name: role === 'coach' ? 'Dr. Sarah Johnson' : 'Ahmad Rizki',
+      name: role === 'coach' ? 'Dr. Sarah Johnson' : role === 'premium-user' ? 'Premium User' : 'Ahmad Rizki',
       email: email,
       role: role,
+      package: role === 'peserta' ? 'free' : role === 'premium-user' ? 'premium' : undefined, // Only students have packages, coaches have full access
     };
     setUser(mockUser);
     setCurrentPage(role === 'coach' ? 'coach-dashboard' : 'student-dashboard');
@@ -119,6 +124,10 @@ export default function App() {
         setCurrentPage('students');
       }
     }
+  };
+
+  const handleNavigateToBadgeList = () => {
+    setCurrentPage('badge-list');
   };
 
   const handleBackToDashboard = () => {
@@ -188,10 +197,11 @@ export default function App() {
                   onNavigateToClassList={() => setCurrentPage('class-list')} 
                   onNavigateToCommunity={() => handleTabChange('community')} 
                   onNavigateToQuiz={() => setCurrentPage('quiz')} 
-                  onNavigateToMyClasses={() => { // <-- Tambahkan ini
+                  onNavigateToMyClasses={() => {
                     setCurrentPage('my-classes');
                     setActiveTab('my-classes');
                   }}
+                  onNavigateToBadgeList={handleNavigateToBadgeList}
                />;
 
       case 'manage-classes':
@@ -276,6 +286,16 @@ export default function App() {
                   onBack={() => setCurrentPage('class-detail')} 
                   lessonId={selectedLessonId} 
                />;
+      
+      case 'badge-list':
+        return <BadgeListPage onBack={handleBackToDashboard} />;
+
+      case 'packages':
+        return (
+          <PackagesPage
+            onBack={() => setCurrentPage('student-dashboard')}
+          />
+        );
 
       default:
         return null;
@@ -286,7 +306,7 @@ export default function App() {
   const showBottomNav = user && ![
     'login', 'register', 'quiz', 'edit-profile', 'change-password', 
     'notifications', 'create-thread', 'thread-detail', 'checkout', 
-    'course-player', 'class-detail', 'class-list' // 'class-list' (jelajahi) juga disembunyikan
+    'course-player', 'class-detail', 'class-list', 'badge-list'
   ].includes(currentPage);
 
   return (
